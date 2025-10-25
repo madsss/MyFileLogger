@@ -60,7 +60,7 @@ namespace LogComponent
         /// The Timestamp is initialized when the log is added. Th
         /// </summary>
         public virtual DateTime Timestamp { get; set; }
-  
+
 
         #endregion
     }
