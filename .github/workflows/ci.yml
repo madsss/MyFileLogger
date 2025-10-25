@@ -26,5 +26,20 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run tests
-        run: dotnet test --no-build --configuration Release --verbosity normal
+      - name: Run unit tests
+        run: |
+          dotnet test tests/Unit/LogComponent.UnitTests.csproj --no-build --configuration Release --logger "console;verbosity=detailed" --logger "trx;LogFileName=unit_tests.trx" --results-directory ./test-results/unit
+
+      - name: Run library tests
+        run: |
+          dotnet test tests/LogComponent.Tests/LogComponent.Tests.csproj --no-build --configuration Release --logger "console;verbosity=detailed" --logger "trx;LogFileName=library_tests.trx" --results-directory ./test-results/library
+
+      - name: Run integration tests
+        run: |
+          dotnet test tests/Integration/LogComponent.IntegrationTests.csproj --no-build --configuration Release --logger "console;verbosity=detailed" --logger "trx;LogFileName=integration_tests.trx" --results-directory ./test-results/integration
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./test-results
